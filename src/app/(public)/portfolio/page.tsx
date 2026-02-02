@@ -5,9 +5,14 @@ import { prisma } from "@/lib/prisma"
 export const dynamic = "force-dynamic"
 
 export default async function PortfolioPage() {
-    const projects = await prisma.project.findMany({
-        orderBy: { createdAt: "desc" }
-    })
+    let projects = [];
+    try {
+        projects = await prisma.project.findMany({
+            orderBy: { createdAt: "desc" }
+        })
+    } catch (error) {
+        console.error("Failed to fetch projects, using empty list");
+    }
 
     return (
         <div className="min-h-screen bg-white dark:bg-slate-950 font-sans text-slate-900 dark:text-slate-100">

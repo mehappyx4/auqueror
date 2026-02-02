@@ -9,12 +9,17 @@ export default async function PublicLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    // Fetch footer content
-    const configs = await prisma.siteConfig.findMany();
-    const configMap = configs.reduce((acc: Record<string, string>, curr: { key: string; value: string }) => {
-        acc[curr.key] = curr.value;
-        return acc;
-    }, {} as Record<string, string>);
+    // Fetch footer content with fallback
+    let configMap: Record<string, string> = {};
+    try {
+        const configs = await prisma.siteConfig.findMany();
+        configMap = configs.reduce((acc: Record<string, string>, curr: { key: string; value: string }) => {
+            acc[curr.key] = curr.value;
+            return acc;
+        }, {} as Record<string, string>);
+    } catch (e) {
+        console.error("Database connection failed, using defaults");
+    }
 
     return (
         <div className="flex flex-col min-h-screen">

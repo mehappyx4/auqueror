@@ -5,11 +5,16 @@ import Link from "next/link"
 export const dynamic = "force-dynamic"
 
 export default async function Home() {
-  const configs = await prisma.siteConfig.findMany()
-  const configMap = configs.reduce((acc: Record<string, string>, curr: { key: string; value: string }) => {
-    acc[curr.key] = curr.value
-    return acc
-  }, {} as Record<string, string>)
+  let configMap: Record<string, string> = {};
+  try {
+    const configs = await prisma.siteConfig.findMany();
+    configMap = configs.reduce((acc: Record<string, string>, curr: { key: string; value: string }) => {
+      acc[curr.key] = curr.value;
+      return acc;
+    }, {} as Record<string, string>);
+  } catch (error) {
+    console.error("Failed to fetch configs:", error);
+  }
 
   return (
     <main className="min-h-screen bg-white dark:bg-slate-950 font-sans text-slate-900 dark:text-slate-100">
