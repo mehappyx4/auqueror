@@ -1,51 +1,40 @@
-# Deployment Guide: Go Online with GitHub & Vercel 🚀
+# Deployment Guide: Final Setup 🚀
 
-Since **Git** is not currently installed on your computer, you need to follow these steps to put your website online.
+To make your website fully functional (login, save data), you must connect a real database on Vercel.
 
-## Step 1: Install Git
-1.  Download Git for Windows: [https://git-scm.com/download/win](https://git-scm.com/download/win)
-2.  Install it (Keep pressing "Next" for default settings).
-3.  **Restart your computer** (or at least close and reopen VS Code) after installation.
+## Step 1: Create Database on Vercel
+1.  Go to your Project on **[Vercel.com](https://vercel.com)**.
+2.  Click the **Storage** tab.
+3.  Click **Create Database**.
+4.  Select **Postgres** -> Continue.
+5.  Accept usage terms -> Continue.
+6.  Enter a name (e.g., `auqueror-db`) -> Create & Continue.
+7.  **IMPORTANT**: Click **Connect Project** and select your `auqueror` project.
 
-## Step 2: Prepare Your Code
-I have already prepared your `.gitignore` file. Open your terminal in this project folder and run:
+## Step 2: Build the Database Structure
+Once connected, Vercel needs to know your "Schema" (Tables).
+1.  Go to the **Settings** tab of your project via Vercel website.
+2.  Go to **Deployments** section in the left sidebar.
+3.  Click on the **3 dots (...)** button next to your latest deployment -> select **Redeploy**.
+4.  Wait for it to finish. This will trigger `prisma generate` and create your tables.
 
-```bash
-git init
-git add .
-git commit -m "Initial commit"
+*(Alternatively, you can run this command on your local machine if you have credentials, but redeploying is easier).*
+
+## Step 3: Create Your Admin Account
+Since the new database is empty, you can't login yet. You need to create the first user.
+1.  On Vercel, go to the **Storage** tab -> Select your database.
+2.  Click **Query** (side menu).
+3.  Copy and Paste this SQL command to create your admin user:
+
+```sql
+INSERT INTO "User" ("id", "name", "email", "password", "role", "createdAt", "updatedAt")
+VALUES ('admin_id', 'Admin User', 'admin@example.com', '$2a$12$L7W1a/..hashedpassword...', 'ADMIN', NOW(), NOW());
 ```
 
-## Step 3: Push to GitHub
-1.  Go to [GitHub.com](https://github.com) and sign in.
-2.  Click **(+) > New Repository**.
-3.  Name it (e.g., `my-portfolio`).
-4.  **Do NOT** check "Initialize with README". Click **Create repository**.
-5.  Copy the code block under **"…or push an existing repository from the command line"**. It looks like this:
-    ```bash
-    git remote add origin https://github.com/YOUR_USERNAME/my-portfolio.git
-    git branch -M main
-    git push -u origin main
-    ```
-6.  Paste those commands into your terminal.
+*Note: Generating a hashed password manually via SQL is hard. Easier way:*
+**Better Way:** Just **Register** a new user on your live website (`/auth/register`), then go to Vercel Database -> **Data** tab -> Change that user's role from `USER` to `ADMIN` manually.
 
-## Step 4: Deploy to Vercel (Recommended)
-1.  Go to [Vercel.com](https://vercel.com) and sign up with GitHub.
-2.  Click **"Add New..." > "Project"**.
-3.  Import your `my-portfolio` repository.
-4.  **Environment Variables**:
-    *   Click "Environment Variables".
-    *   Add `NEXTAUTH_SECRET` (You can generate one running `openssl rand -base64 32` or just smash your keyboard randomly for now like `mysupersecretcode123`).
-    *   Add `NEXTAUTH_URL` = `https://your-vercel-project.vercel.app` (after deployment) or just leave it for Vercel to handle in some cases, but best to set it.
-5.  Click **Deploy**.
-
-## ⚠️ IMPORTANT: Database Warning
-Your project currently uses **SQLite** (`dev.db`).
-*   **Problem**: SQLite files **do not persist** on cloud platforms like Vercel. If you deploy this way, your data (projects, admin user, changes) will **reset** every time the site updates or goes to sleep.
-*   **Solution**: For a real online site, you should switch to **Vercel Postgres** or **Neon DB**.
-    1.  Create a database on Vercel Storage.
-    2.  Get the `POSTGRES_PRISMA_URL`.
-    3.  Update your `.env` and `schema.prisma`.
-    4.  Run `npx prisma migrate deploy`.
-
-For now, you can deploy to see the frontend "live", but **dynamic data won't save permanently** until you switch databases.
+## Step 4: Environment Variables check
+Ensure these Environment Variables are set in **Settings > Environment Variables**:
+- `NEXTAUTH_SECRET`: Random string (e.g. `mysecret123`)
+- `NEXTAUTH_URL`: Your full website URL (e.g. `https://auqueror.vercel.app`)
