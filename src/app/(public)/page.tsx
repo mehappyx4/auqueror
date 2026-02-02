@@ -1,6 +1,9 @@
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 
+
+export const dynamic = "force-dynamic"
+
 export default async function Home() {
   const configs = await prisma.siteConfig.findMany()
   const configMap = configs.reduce((acc: Record<string, string>, curr: { key: string; value: string }) => {

@@ -1,6 +1,9 @@
 
 import { prisma } from "@/lib/prisma"
 
+
+export const dynamic = "force-dynamic"
+
 export default async function PortfolioPage() {
     const projects = await prisma.project.findMany({
         orderBy: { createdAt: "desc" }
