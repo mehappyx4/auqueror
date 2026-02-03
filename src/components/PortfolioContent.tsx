@@ -15,15 +15,26 @@ interface Project {
 
 interface PortfolioContentProps {
     projects: Project[]
+    configMap: Record<string, string>
 }
 
-export default function PortfolioContent({ projects }: PortfolioContentProps) {
+export default function PortfolioContent({ projects, configMap }: PortfolioContentProps) {
     const { t } = useLanguage()
 
     return (
-        <div className="min-h-screen font-sans text-slate-100">
-            {/* Portfolio Title */}
-            <section className="pt-32 pb-12 px-6">
+        <div
+            className="min-h-screen font-sans text-slate-100 relative"
+            style={configMap.portfolio_background ? {
+                backgroundImage: `url(${configMap.portfolio_background})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundAttachment: 'fixed'
+            } : {}}
+        >
+            {configMap.portfolio_background && (
+                <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+            )}
+            <section className="pt-32 pb-12 px-6 relative z-10">
                 <div className="max-w-4xl mx-auto text-center">
                     <h1 className="text-5xl md:text-6xl font-black mb-4 text-white text-glow">
                         {t("Project Archive", "คลังเก็บโปรเจกต์")}
@@ -34,8 +45,7 @@ export default function PortfolioContent({ projects }: PortfolioContentProps) {
                 </div>
             </section>
 
-            {/* 4. Work Experience / Portfolio */}
-            <section className="py-20 px-6">
+            <section className="py-20 px-6 relative z-10">
                 <div className="max-w-7xl mx-auto">
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
                         {projects.map((project) => (

@@ -10,9 +10,19 @@ export default function AboutContent({ configMap }: AboutContentProps) {
     const { t } = useLanguage()
 
     return (
-        <div className="min-h-screen font-sans text-slate-100">
-            {/* About Title */}
-            <section className="pt-32 pb-12 px-6">
+        <div
+            className="min-h-screen font-sans text-slate-100 relative"
+            style={configMap.about_background ? {
+                backgroundImage: `url(${configMap.about_background})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundAttachment: 'fixed'
+            } : {}}
+        >
+            {configMap.about_background && (
+                <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+            )}
+            <section className="pt-32 pb-12 px-6 relative z-10">
                 <div className="max-w-4xl mx-auto text-center">
                     <h1 className="text-5xl md:text-6xl font-black mb-4 text-white text-glow">
                         {t("Genesis & Vision", "จุดกำเนิดและวิสัยทัศน์")}
@@ -23,8 +33,7 @@ export default function AboutContent({ configMap }: AboutContentProps) {
                 </div>
             </section>
 
-            {/* 2. About Me */}
-            <section className="py-20 px-6">
+            <section className="py-20 px-6 relative z-10">
                 <div className="max-w-5xl mx-auto glass-card rounded-[2.5rem] p-8 md:p-16 cosmic-glow border-white/5">
                     <div className="flex flex-col md:flex-row items-center gap-16">
                         <div className="w-48 h-48 md:w-72 md:h-72 flex-shrink-0 relative group">
@@ -54,8 +63,7 @@ export default function AboutContent({ configMap }: AboutContentProps) {
                 </div>
             </section>
 
-            {/* Chronological Orbit (Biography Timeline) */}
-            <section className="py-24 px-6 relative">
+            <section className="py-24 px-6 relative z-10">
                 <div className="max-w-4xl mx-auto">
                     <h2 className="text-4xl font-black mb-20 text-center text-white text-glow">
                         {t("Chronological Orbit", "วงโคจรตามกาลเวลา")}
@@ -108,8 +116,7 @@ export default function AboutContent({ configMap }: AboutContentProps) {
                 </div>
             </section>
 
-            {/* 3. Core Skills */}
-            <section className="py-24 px-6">
+            <section className="py-24 px-6 relative z-10">
                 <div className="max-w-6xl mx-auto">
                     <h2 className="text-4xl font-black mb-16 text-center text-white text-glow">
                         {t("Universal Tech-Stack", "ทักษะเทคโนโลยีสากล")}

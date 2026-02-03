@@ -87,6 +87,12 @@ export default function AdminDashboard() {
         social_twitter: "",
         social_facebook: "",
         social_instagram: "",
+        social_background: "",
+
+        // Backgrounds
+        about_background: "",
+        portfolio_background: "",
+        contact_background: "",
 
         // Theme
         theme_primary_color: "#3b82f6",
@@ -595,8 +601,6 @@ export default function AdminDashboard() {
 
         { id: "SOCIAL", label: t("Social Media", "โซเชียลมีเดีย") },
         { id: "USERS", label: t("Users", "ผู้ใช้งาน") },
-
-        { id: "THEME", label: t("Theme", "ธีมเว็บ") },
     ]
 
     return (
@@ -660,128 +664,154 @@ export default function AdminDashboard() {
                             </a>
                         </div>
 
-                        <div className="grid md:grid-cols-2 gap-6">
-                            <div className="space-y-4">
-                                <div className="grid md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium mb-1">主 Hero Title (EN)</label>
-                                        <div className="flex gap-2">
-                                            <input
-                                                className="flex-1 rounded-lg border border-gray-300 dark:border-zinc-700 p-2.5 dark:bg-zinc-800 focus:ring-2 focus:ring-blue-500 transition-all font-bold"
-                                                value={configs.hero_title || ""}
-                                                onChange={e => setConfigs({ ...configs, hero_title: e.target.value })}
-                                            />
-                                            <button onClick={() => handleSaveConfig("hero_title")} className="bg-slate-900 dark:bg-slate-700 text-white px-3 rounded-lg hover:opacity-90">Save</button>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium mb-1">🇹🇭 Hero Title (TH)</label>
-                                        <div className="flex gap-2">
-                                            <input
-                                                className="flex-1 rounded-lg border border-gray-300 dark:border-zinc-700 p-2.5 dark:bg-zinc-800 focus:ring-2 focus:ring-blue-500 transition-all font-bold"
-                                                value={configs.hero_title_th || ""}
-                                                onChange={e => setConfigs({ ...configs, hero_title_th: e.target.value })}
-                                            />
-                                            <button onClick={() => handleSaveConfig("hero_title_th")} className="bg-slate-900 dark:bg-slate-700 text-white px-3 rounded-lg hover:opacity-90">Save</button>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div className="space-y-6">
 
-                                <div className="grid md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium mb-1">🎞️ Hero Subtitle (EN)</label>
-                                        <div className="flex gap-2">
-                                            <input
-                                                className="flex-1 rounded-lg border border-gray-300 dark:border-zinc-700 p-2.5 dark:bg-zinc-800 focus:ring-2 focus:ring-blue-500 transition-all text-xs uppercase tracking-widest"
-                                                value={configs.hero_subtitle || ""}
-                                                onChange={e => setConfigs({ ...configs, hero_subtitle: e.target.value })}
-                                            />
-                                            <button onClick={() => handleSaveConfig("hero_subtitle")} className="bg-slate-900 dark:bg-slate-700 text-white px-3 rounded-lg hover:opacity-90">Save</button>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium mb-1">🇹🇭 Hero Subtitle (TH)</label>
-                                        <div className="flex gap-2">
-                                            <input
-                                                className="flex-1 rounded-lg border border-gray-300 dark:border-zinc-700 p-2.5 dark:bg-zinc-800 focus:ring-2 focus:ring-blue-500 transition-all text-xs uppercase tracking-widest"
-                                                value={configs.hero_subtitle_th || ""}
-                                                onChange={e => setConfigs({ ...configs, hero_subtitle_th: e.target.value })}
-                                            />
-                                            <button onClick={() => handleSaveConfig("hero_subtitle_th")} className="bg-slate-900 dark:bg-slate-700 text-white px-3 rounded-lg hover:opacity-90">Save</button>
-                                        </div>
-                                    </div>
-                                </div>
+                            {/* 1. Text Content Card */}
+                            <div className="bg-white dark:bg-zinc-800 p-6 rounded-2xl border border-gray-200 dark:border-zinc-700 shadow-sm space-y-6">
+                                <h3 className="text-lg font-bold flex items-center gap-2 pb-2 border-b dark:border-zinc-700 text-gray-800 dark:text-gray-200">
+                                    <span>✍️ Text Content</span>
+                                    <span className="text-xs font-normal text-gray-400 ml-auto">Manage hero section headings</span>
+                                </h3>
 
-                                <div className="grid md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium mb-1">📝 Hero Description (EN)</label>
-                                        <div className="flex gap-2">
-                                            <textarea
-                                                className="flex-1 rounded-lg border border-gray-300 dark:border-zinc-700 p-2.5 dark:bg-zinc-800 focus:ring-2 focus:ring-blue-500 transition-all"
-                                                rows={3}
-                                                value={configs.hero_description || ""}
-                                                onChange={e => setConfigs({ ...configs, hero_description: e.target.value })}
-                                            />
-                                            <div className="flex flex-col justify-end">
-                                                <button onClick={() => handleSaveConfig("hero_description")} className="h-10 bg-slate-900 dark:bg-slate-700 text-white px-3 rounded-lg hover:opacity-90">Save</button>
+                                {/* Titles */}
+                                <div className="space-y-4">
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                        <div className="space-y-1.5">
+                                            <label className="text-xs font-semibold uppercase tracking-wider text-gray-500">Main Title (EN)</label>
+                                            <div className="flex gap-2">
+                                                <input
+                                                    className="flex-1 rounded-lg border border-gray-300 dark:border-zinc-600 p-2.5 dark:bg-zinc-900 focus:ring-2 focus:ring-blue-500 transition-all font-bold"
+                                                    value={configs.hero_title || ""}
+                                                    onChange={e => setConfigs({ ...configs, hero_title: e.target.value })}
+                                                    placeholder="Main Headline"
+                                                />
+                                                <button onClick={() => handleSaveConfig("hero_title")} className="p-2.5 bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-blue-600 hover:text-white transition-colors">💾</button>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <label className="text-xs font-semibold uppercase tracking-wider text-gray-500">Main Title (TH)</label>
+                                            <div className="flex gap-2">
+                                                <input
+                                                    className="flex-1 rounded-lg border border-gray-300 dark:border-zinc-600 p-2.5 dark:bg-zinc-900 focus:ring-2 focus:ring-blue-500 transition-all font-bold"
+                                                    value={configs.hero_title_th || ""}
+                                                    onChange={e => setConfigs({ ...configs, hero_title_th: e.target.value })}
+                                                    placeholder="หัวข้อหลัก"
+                                                />
+                                                <button onClick={() => handleSaveConfig("hero_title_th")} className="p-2.5 bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-blue-600 hover:text-white transition-colors">💾</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <label className="block text-sm font-medium mb-1">🇹🇭 Hero Description (TH)</label>
-                                        <div className="flex gap-2">
-                                            <textarea
-                                                className="flex-1 rounded-lg border border-gray-300 dark:border-zinc-700 p-2.5 dark:bg-zinc-800 focus:ring-2 focus:ring-blue-500 transition-all"
-                                                rows={3}
-                                                value={configs.hero_description_th || ""}
-                                                onChange={e => setConfigs({ ...configs, hero_description_th: e.target.value })}
-                                            />
-                                            <div className="flex flex-col justify-end">
-                                                <button onClick={() => handleSaveConfig("hero_description_th")} className="h-10 bg-slate-900 dark:bg-slate-700 text-white px-3 rounded-lg hover:opacity-90">Save</button>
+                                </div>
+
+                                {/* Subtitles */}
+                                <div className="space-y-4 pt-2">
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                        <div className="space-y-1.5">
+                                            <label className="text-xs font-semibold uppercase tracking-wider text-gray-500">Subtitle (EN)</label>
+                                            <div className="flex gap-2">
+                                                <input
+                                                    className="flex-1 rounded-lg border border-gray-300 dark:border-zinc-600 p-2.5 dark:bg-zinc-900 focus:ring-2 focus:ring-blue-500 transition-all text-sm"
+                                                    value={configs.hero_subtitle || ""}
+                                                    onChange={e => setConfigs({ ...configs, hero_subtitle: e.target.value })}
+                                                    placeholder="Role / Tagline"
+                                                />
+                                                <button onClick={() => handleSaveConfig("hero_subtitle")} className="p-2.5 bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-blue-600 hover:text-white transition-colors">💾</button>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <label className="text-xs font-semibold uppercase tracking-wider text-gray-500">Subtitle (TH)</label>
+                                            <div className="flex gap-2">
+                                                <input
+                                                    className="flex-1 rounded-lg border border-gray-300 dark:border-zinc-600 p-2.5 dark:bg-zinc-900 focus:ring-2 focus:ring-blue-500 transition-all text-sm"
+                                                    value={configs.hero_subtitle_th || ""}
+                                                    onChange={e => setConfigs({ ...configs, hero_subtitle_th: e.target.value })}
+                                                    placeholder="บทบาท / คำโปรย"
+                                                />
+                                                <button onClick={() => handleSaveConfig("hero_subtitle_th")} className="p-2.5 bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-blue-600 hover:text-white transition-colors">💾</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Descriptions */}
+                                <div className="space-y-4 pt-2">
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                        <div className="space-y-1.5">
+                                            <label className="text-xs font-semibold uppercase tracking-wider text-gray-500">Description (EN)</label>
+                                            <div className="flex gap-2">
+                                                <textarea
+                                                    className="flex-1 rounded-lg border border-gray-300 dark:border-zinc-600 p-2.5 dark:bg-zinc-900 focus:ring-2 focus:ring-blue-500 transition-all"
+                                                    rows={2}
+                                                    value={configs.hero_description || ""}
+                                                    onChange={e => setConfigs({ ...configs, hero_description: e.target.value })}
+                                                    placeholder="Brief introduction..."
+                                                />
+                                                <button onClick={() => handleSaveConfig("hero_description")} className="px-3 bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-blue-600 hover:text-white transition-colors h-auto">💾</button>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <label className="text-xs font-semibold uppercase tracking-wider text-gray-500">Description (TH)</label>
+                                            <div className="flex gap-2">
+                                                <textarea
+                                                    className="flex-1 rounded-lg border border-gray-300 dark:border-zinc-600 p-2.5 dark:bg-zinc-900 focus:ring-2 focus:ring-blue-500 transition-all"
+                                                    rows={2}
+                                                    value={configs.hero_description_th || ""}
+                                                    onChange={e => setConfigs({ ...configs, hero_description_th: e.target.value })}
+                                                    placeholder="คำแนะนำตัวสั้นๆ..."
+                                                />
+                                                <button onClick={() => handleSaveConfig("hero_description_th")} className="px-3 bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-blue-600 hover:text-white transition-colors h-auto">💾</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-
-                            {/* Hero Image Upload */}
-                            <div className="bg-white dark:bg-zinc-800 p-6 rounded-xl border border-gray-200 dark:border-zinc-700 shadow-sm">
-                                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                                    <span>🖼️ Hero Background Image</span>
+                            {/* 2. Visual Assets Card */}
+                            <div className="bg-white dark:bg-zinc-800 p-6 rounded-2xl border border-gray-200 dark:border-zinc-700 shadow-sm space-y-6">
+                                <h3 className="text-lg font-bold flex items-center gap-2 pb-2 border-b dark:border-zinc-700 text-gray-800 dark:text-gray-200">
+                                    <span>🖼️ Visual Assets</span>
+                                    <span className="text-xs font-normal text-gray-400 ml-auto">Hero background image</span>
                                 </h3>
 
-                                <div className="flex flex-col md:flex-row gap-6 items-start">
-                                    <div className="flex-1 w-full">
-                                        <div className="border-2 border-dashed border-gray-300 dark:border-zinc-600 rounded-xl p-8 text-center hover:bg-gray-50 dark:hover:bg-zinc-700/30 transition-all cursor-pointer relative group">
+                                <div className="grid lg:grid-cols-2 gap-6">
+                                    <div className="relative group cursor-pointer">
+                                        <div className="border-2 border-dashed border-gray-300 dark:border-zinc-600 rounded-2xl p-8 text-center hover:bg-blue-50 dark:hover:bg-zinc-700/50 hover:border-blue-400 transition-all h-full flex flex-col justify-center">
                                             <input
                                                 type="file"
                                                 id="hero-upload"
-                                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                                                 onChange={(e) => handleImageUpload(e, "config", "hero_image")}
                                             />
-                                            <div className="space-y-3">
-                                                <div className="text-4xl group-hover:scale-110 transition-transform">📤</div>
-                                                <div className="font-medium">Click to upload new background</div>
-                                                <div className="text-xs text-gray-400">Recommended: 1920x1080px (Max 4.5MB)</div>
+                                            <div className="space-y-4 pointer-events-none">
+                                                <div className="w-16 h-16 mx-auto bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-3xl">
+                                                    📤
+                                                </div>
+                                                <div>
+                                                    <p className="font-semibold text-gray-700 dark:text-gray-200">Click to upload new background</p>
+                                                    <p className="text-xs text-gray-400 mt-1">Recommended: 1920x1080px (Max 4.5MB)</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     {configs.hero_image && (
-                                        <div className="w-full md:w-64">
-                                            <div className="text-sm font-medium mb-2">Current Image:</div>
-                                            <div className="relative aspect-video rounded-lg overflow-hidden border border-gray-200 dark:border-zinc-700 group">
+                                        <div className="space-y-3">
+                                            <div className="flex justify-between items-center text-sm">
+                                                <span className="font-medium text-gray-500">Current Active Background</span>
+                                                <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Active</span>
+                                            </div>
+                                            <div className="relative aspect-video rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700 shadow-sm group">
                                                 <img src={configs.hero_image} alt="Hero Background" className="w-full h-full object-cover" />
-                                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                                                    <a href={configs.hero_image} target="_blank" className="text-white text-xs hover:underline">View Full</a>
+                                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all backdrop-blur-sm">
+                                                    <a href={configs.hero_image} target="_blank" className="bg-white text-black px-4 py-2 rounded-full text-xs font-bold hover:scale-105 transition-transform">
+                                                        View Full Size ↗
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
                                     )}
                                 </div>
                             </div>
-
                         </div>
 
                         <HeroPreview
@@ -803,6 +833,34 @@ export default function AdminDashboard() {
                                 <a href="/about" target="_blank" className="text-sm text-blue-600 hover:underline flex items-center gap-1">
                                     Preview Page ↗
                                 </a>
+                            </div>
+
+                            {/* Background Image Card */}
+                            <div className="bg-white dark:bg-zinc-800 p-6 rounded-2xl border border-gray-200 dark:border-zinc-700 shadow-sm space-y-6">
+                                <h3 className="text-lg font-bold flex items-center gap-2 pb-2 border-b dark:border-zinc-700 text-gray-800 dark:text-gray-200">
+                                    <span>🖼️ Page Background</span>
+                                    <span className="text-xs font-normal text-gray-400 ml-auto">Custom background for About page</span>
+                                </h3>
+                                <div className="grid md:grid-cols-2 gap-6 items-center">
+                                    <div className="relative group cursor-pointer h-full">
+                                        <div className="border-2 border-dashed border-gray-300 dark:border-zinc-600 rounded-2xl p-6 text-center hover:bg-blue-50 dark:hover:bg-zinc-700/50 hover:border-blue-400 transition-all h-full flex flex-col justify-center">
+                                            <input
+                                                type="file"
+                                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                                onChange={(e) => handleImageUpload(e, "config", "about_background")}
+                                            />
+                                            <div className="space-y-2 pointer-events-none">
+                                                <div className="text-2xl">📤</div>
+                                                <p className="font-semibold text-sm text-gray-700 dark:text-gray-200">Upload Background</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {configs.about_background && (
+                                        <div className="relative aspect-video rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700 shadow-sm">
+                                            <img src={configs.about_background} alt="Background" className="w-full h-full object-cover" />
+                                        </div>
+                                    )}
+                                </div>
                             </div>
 
                             <div className="grid md:grid-cols-2 gap-8">
@@ -1071,6 +1129,34 @@ export default function AdminDashboard() {
                                 </a>
                             </div>
 
+                            {/* Background Image Card */}
+                            <div className="bg-white dark:bg-zinc-800 p-6 rounded-2xl border border-gray-200 dark:border-zinc-700 shadow-sm space-y-6">
+                                <h3 className="text-lg font-bold flex items-center gap-2 pb-2 border-b dark:border-zinc-700 text-gray-800 dark:text-gray-200">
+                                    <span>🖼️ Page Background</span>
+                                    <span className="text-xs font-normal text-gray-400 ml-auto">Custom background for Portfolio page</span>
+                                </h3>
+                                <div className="grid md:grid-cols-2 gap-6 items-center">
+                                    <div className="relative group cursor-pointer h-full">
+                                        <div className="border-2 border-dashed border-gray-300 dark:border-zinc-600 rounded-2xl p-6 text-center hover:bg-blue-50 dark:hover:bg-zinc-700/50 hover:border-blue-400 transition-all h-full flex flex-col justify-center">
+                                            <input
+                                                type="file"
+                                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                                onChange={(e) => handleImageUpload(e, "config", "portfolio_background")}
+                                            />
+                                            <div className="space-y-2 pointer-events-none">
+                                                <div className="text-2xl">📤</div>
+                                                <p className="font-semibold text-sm text-gray-700 dark:text-gray-200">Upload Background</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {configs.portfolio_background && (
+                                        <div className="relative aspect-video rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700 shadow-sm">
+                                            <img src={configs.portfolio_background} alt="Background" className="w-full h-full object-cover" />
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
                             {/* Editor */}
                             <div className="bg-slate-50 dark:bg-zinc-800/30 border border-dashed border-gray-300 dark:border-zinc-700 rounded-xl p-6">
                                 <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">
@@ -1223,6 +1309,34 @@ export default function AdminDashboard() {
                                 <a href="/contact" target="_blank" className="text-sm text-blue-600 hover:underline flex items-center gap-1">
                                     Preview Page ↗
                                 </a>
+                            </div>
+
+                            {/* Background Image Card */}
+                            <div className="bg-white dark:bg-zinc-800 p-6 rounded-2xl border border-gray-200 dark:border-zinc-700 shadow-sm space-y-6">
+                                <h3 className="text-lg font-bold flex items-center gap-2 pb-2 border-b dark:border-zinc-700 text-gray-800 dark:text-gray-200">
+                                    <span>🖼️ Page Background</span>
+                                    <span className="text-xs font-normal text-gray-400 ml-auto">Custom background for Contact page</span>
+                                </h3>
+                                <div className="grid md:grid-cols-2 gap-6 items-center">
+                                    <div className="relative group cursor-pointer h-full">
+                                        <div className="border-2 border-dashed border-gray-300 dark:border-zinc-600 rounded-2xl p-6 text-center hover:bg-blue-50 dark:hover:bg-zinc-700/50 hover:border-blue-400 transition-all h-full flex flex-col justify-center">
+                                            <input
+                                                type="file"
+                                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                                onChange={(e) => handleImageUpload(e, "config", "contact_background")}
+                                            />
+                                            <div className="space-y-2 pointer-events-none">
+                                                <div className="text-2xl">📤</div>
+                                                <p className="font-semibold text-sm text-gray-700 dark:text-gray-200">Upload Background</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {configs.contact_background && (
+                                        <div className="relative aspect-video rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700 shadow-sm">
+                                            <img src={configs.contact_background} alt="Background" className="w-full h-full object-cover" />
+                                        </div>
+                                    )}
+                                </div>
                             </div>
 
                             {/* Top Branding Section */}
@@ -1393,6 +1507,34 @@ export default function AdminDashboard() {
                             <div className="pb-4 border-b dark:border-zinc-800">
                                 <h2 className="text-xl font-bold">Social Media Links</h2>
                                 <p className="text-sm text-gray-500 mt-1">Connect your social media profiles</p>
+                            </div>
+
+                            {/* Background Image Card */}
+                            <div className="bg-white dark:bg-zinc-800 p-6 rounded-2xl border border-gray-200 dark:border-zinc-700 shadow-sm space-y-6 mb-6">
+                                <h3 className="text-lg font-bold flex items-center gap-2 pb-2 border-b dark:border-zinc-700 text-gray-800 dark:text-gray-200">
+                                    <span>🖼️ Footer Background</span>
+                                    <span className="text-xs font-normal text-gray-400 ml-auto">Background for social footer section</span>
+                                </h3>
+                                <div className="grid md:grid-cols-2 gap-6 items-center">
+                                    <div className="relative group cursor-pointer h-full">
+                                        <div className="border-2 border-dashed border-gray-300 dark:border-zinc-600 rounded-2xl p-6 text-center hover:bg-blue-50 dark:hover:bg-zinc-700/50 hover:border-blue-400 transition-all h-full flex flex-col justify-center">
+                                            <input
+                                                type="file"
+                                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                                onChange={(e) => handleImageUpload(e, "config", "social_background")}
+                                            />
+                                            <div className="space-y-2 pointer-events-none">
+                                                <div className="text-2xl">📤</div>
+                                                <p className="font-semibold text-sm text-gray-700 dark:text-gray-200">Upload Background</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {configs.social_background && (
+                                        <div className="relative aspect-video rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700 shadow-sm">
+                                            <img src={configs.social_background} alt="Background" className="w-full h-full object-cover" />
+                                        </div>
+                                    )}
+                                </div>
                             </div>
 
                             <div className="max-w-2xl space-y-4">
@@ -1583,88 +1725,6 @@ export default function AdminDashboard() {
                                     </div>
                                 </div>
                             )}
-                        </div>
-                    )
-                }
-
-                {/* 7. THEME TAB */}
-                {
-                    activeTab === "THEME" && (
-                        <div className="space-y-6 animate-fade-in-up">
-                            <div className="pb-4 border-b dark:border-zinc-800">
-                                <h2 className="text-xl font-bold">Theme Settings</h2>
-                                <p className="text-sm text-gray-500 mt-1">Customize the look and feel of your website</p>
-                            </div>
-                            <div className="space-y-6">
-                                <div>
-                                    <h3 className="font-semibold mb-3 flex items-center gap-2">
-                                        <span>✨ AI Background Generator</span>
-                                        <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">New</span>
-                                    </h3>
-                                    <div className="bg-gray-50 dark:bg-zinc-800 p-4 rounded-xl border border-gray-200 dark:border-zinc-700">
-                                        <label className="block text-sm font-medium mb-2">Describe your desired background</label>
-                                        <textarea
-                                            className="w-full rounded-lg border border-gray-300 dark:border-zinc-700 p-3 dark:bg-zinc-900 mb-3 focus:ring-2 focus:ring-purple-500"
-                                            rows={3}
-                                            placeholder="e.g., A futuristic cyberpunk city with neon lights in deep blue and purple tones..."
-                                            value={aiPrompt}
-                                            onChange={e => setAiPrompt(e.target.value)}
-                                        />
-                                        <button
-                                            onClick={handleGenerateBackground}
-                                            disabled={isGenerating || !aiPrompt}
-                                            className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-2.5 rounded-lg font-medium transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-                                        >
-                                            {isGenerating ? (
-                                                <>
-                                                    <span className="animate-spin">⚡</span> Generating Magic...
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <span>✨</span> Generate & Apply Background
-                                                </>
-                                            )}
-                                        </button>
-                                        <p className="text-xs text-gray-500 mt-2 text-center">
-                                            Generates and applies image to both Hero Background and Theme Background
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div className="grid md:grid-cols-2 gap-6 opacity-50 pointer-events-none filter grayscale">
-                                    <div>
-                                        <label className="block text-sm font-medium mb-1">Primary Color (Coming Soon)</label>
-                                        <div className="flex gap-2">
-                                            <input
-                                                type="color"
-                                                className="h-10 w-20 rounded cursor-pointer"
-                                                value={configs.theme_primary_color || "#3b82f6"}
-                                                onChange={e => setConfigs({ ...configs, theme_primary_color: e.target.value })}
-                                                disabled
-                                            />
-                                            <input
-                                                className="flex-1 rounded-lg border p-2"
-                                                value={configs.theme_primary_color || "#3b82f6"}
-                                                readOnly
-                                                disabled
-                                            />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium mb-1">Font Family (Coming Soon)</label>
-                                        <select
-                                            className="w-full rounded-lg border p-2.5"
-                                            value={configs.theme_font_family || "Inter"}
-                                            onChange={e => setConfigs({ ...configs, theme_font_family: e.target.value })}
-                                            disabled
-                                        >
-                                            <option value="Inter">Inter</option>
-                                            <option value="Roboto">Roboto</option>
-                                            <option value="Poppins">Poppins</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     )
                 }

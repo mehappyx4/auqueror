@@ -10,9 +10,19 @@ export default function ContactContent({ configMap }: ContactContentProps) {
     const { t } = useLanguage()
 
     return (
-        <div className="min-h-screen font-sans text-slate-100">
-            {/* Contact Title */}
-            <section className="pt-32 pb-12 px-6">
+        <div
+            className="min-h-screen font-sans text-slate-100 relative"
+            style={configMap.contact_background ? {
+                backgroundImage: `url(${configMap.contact_background})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundAttachment: 'fixed'
+            } : {}}
+        >
+            {configMap.contact_background && (
+                <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+            )}
+            <section className="pt-32 pb-12 px-6 relative z-10">
                 <div className="max-w-4xl mx-auto text-center">
                     <h1 className="text-5xl md:text-6xl font-black mb-4 text-white text-glow">
                         {t(configMap.contact_title || "Signal Transmissions", configMap.contact_title_th || configMap.contact_title || "ส่งสัญญาณการติดต่อ")}
@@ -23,8 +33,7 @@ export default function ContactContent({ configMap }: ContactContentProps) {
                 </div>
             </section>
 
-            {/* 5. Contact */}
-            <section className="py-20 px-6">
+            <section className="py-20 px-6 relative z-10">
                 <div className="max-w-5xl mx-auto glass-card rounded-[3rem] p-12 md:p-24 cosmic-glow border-white/5">
                     <p className="text-xl md:text-2xl text-slate-400 mb-20 text-center font-light leading-relaxed max-w-3xl mx-auto">
                         {t(
