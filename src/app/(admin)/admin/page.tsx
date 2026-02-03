@@ -128,6 +128,8 @@ export default function AdminDashboard() {
         tags: "",
         link: ""
     })
+    const [selectedProjects, setSelectedProjects] = useState<string[]>([])
+
 
     // Timeline State
     const [timelineItems, setTimelineItems] = useState<TimelineItem[]>([])
@@ -457,6 +459,50 @@ export default function AdminDashboard() {
             setSaving(false)
         }
     }
+
+    const toggleProjectSelection = (id: string) => {
+        setSelectedProjects(prev =>
+            prev.includes(id)
+                ? prev.filter(pid => pid !== id)
+                : [...prev, id]
+        )
+    }
+
+    const toggleAllProjects = () => {
+        if (selectedProjects.length === projects.length) {
+            setSelectedProjects([])
+        } else {
+            setSelectedProjects(projects.map(p => p.id))
+        }
+    }
+
+    const handleBulkDelete = async () => {
+        if (selectedProjects.length === 0) {
+            setMessage("No projects selected")
+            return
+        }
+
+        if (!confirm(`Delete ${selectedProjects.length} project(s)?`)) return
+
+        setSaving(true)
+        try {
+            await Promise.all(
+                selectedProjects.map(id =>
+                    fetch(`/api/projects?id=${id}`, { method: "DELETE" })
+                )
+            )
+            setMessage(`${selectedProjects.length} project(s) deleted!`)
+            setSelectedProjects([])
+            fetchProjects()
+            setTimeout(() => setMessage(""), 3000)
+        } catch (error) {
+            setMessage("Error deleting projects")
+        } finally {
+            setSaving(false)
+        }
+    }
+
+
 
 
     const handleSaveConfig = async (key: string) => {
@@ -1342,11 +1388,53 @@ export default function AdminDashboard() {
                                 </div>
                             </div>
 
+                            {/* List Header & Bulk Actions */}
+                            {projects.length > 0 && (
+                                <div className="flex justify-between items-center bg-zinc-900/50 p-4 rounded-xl border border-white/5">
+                                    <div className="flex items-center gap-3">
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedProjects.length === projects.length && projects.length > 0}
+                                            onChange={toggleAllProjects}
+                                            className="w-5 h-5 rounded border-gray-600 bg-zinc-800 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                                        />
+                                        <span className="text-sm font-medium text-gray-400">
+                                            {selectedProjects.length} selected
+                                        </span>
+                                    </div>
+                                    {selectedProjects.length > 0 && (
+                                        <button
+                                            onClick={handleBulkDelete}
+                                            disabled={saving}
+                                            className="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white px-4 py-1.5 rounded-lg text-sm font-bold transition-all border border-red-500/20 flex items-center gap-2"
+                                        >
+                                            <span>🗑️</span>
+                                            {saving ? "Deleting..." : "Delete Selected"}
+                                        </button>
+                                    )}
+                                </div>
+                            )}
+
                             {/* List */}
                             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
                                 {projects.map(project => (
-                                    <div key={project.id} className="group relative bg-white dark:bg-zinc-900 border dark:border-zinc-800 rounded-xl overflow-hidden hover:shadow-lg transition-all dark:hover:border-zinc-600">
+                                    <div
+                                        key={project.id}
+                                        className={`group relative bg-white dark:bg-zinc-900 border ${selectedProjects.includes(project.id) ? 'border-blue-500 ring-2 ring-blue-500/20' : 'dark:border-zinc-800'} rounded-xl overflow-hidden hover:shadow-lg transition-all dark:hover:border-zinc-600`}
+                                    >
+                                        {/* Selection Checkbox */}
+                                        <div className="absolute top-3 left-3 z-20">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedProjects.includes(project.id)}
+                                                onChange={() => toggleProjectSelection(project.id)}
+                                                className="w-5 h-5 rounded border-gray-600 bg-black/50 text-blue-600 focus:ring-blue-500 cursor-pointer backdrop-blur-sm"
+                                            />
+                                        </div>
+
                                         <div className="h-48 bg-gray-100 dark:bg-zinc-800 relative">
+
                                             {project.imageUrl && (
                                                 <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover" />
                                             )}
