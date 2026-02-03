@@ -21,10 +21,14 @@ export async function GET() {
         // 2. Hash Password (admin123)
         const hashedPassword = await hash("admin123", 10);
 
-        // 3. Create Admin User
+        // 3. Create or Update Admin User (FORCE ADMIN ROLE)
         const admin = await prisma.user.upsert({
             where: { email: "admin@example.com" },
-            update: {}, // If exists, do nothing
+            update: {
+                password: hashedPassword,
+                role: "ADMIN", // Force update role to ADMIN
+                name: "Super Admin"
+            },
             create: {
                 email: "admin@example.com",
                 name: "Super Admin",
@@ -35,11 +39,18 @@ export async function GET() {
 
         return NextResponse.json({
             success: true,
-            message: "Admin Created Successfully! 🎉",
+            message: "Admin Created/Updated Successfully! 🎉",
+            admin: {
+                id: admin.id,
+                email: admin.email,
+                name: admin.name,
+                role: admin.role
+            },
             credentials: {
                 email: "admin@example.com",
                 password: "admin123"
-            }
+            },
+            note: "Admin role has been set/updated to ADMIN"
         });
 
     } catch (error) {
