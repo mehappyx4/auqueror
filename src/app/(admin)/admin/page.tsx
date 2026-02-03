@@ -388,6 +388,75 @@ export default function AdminDashboard() {
         }
     }
 
+    // Project Management Handlers
+    const handleSaveProject = async () => {
+        if (!projectForm.title || !projectForm.description) {
+            setMessage("Title and description are required")
+            return
+        }
+        setSaving(true)
+        try {
+            const method = isEditing ? "PUT" : "POST"
+            const body = isEditing
+                ? { ...projectForm, id: isEditing }
+                : projectForm
+
+            const res = await fetch("/api/projects", {
+                method,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            })
+
+            if (res.ok) {
+                setMessage(isEditing ? "Project updated!" : "Project created!")
+                setProjectForm({ title: "", title_th: "", description: "", description_th: "", imageUrl: "", tags: "", link: "" })
+                setIsEditing(null)
+                fetchProjects()
+                setTimeout(() => setMessage(""), 3000)
+            } else {
+                const data = await res.json()
+                setMessage(data.error || "Failed to save project")
+            }
+        } catch (error) {
+            setMessage("Error saving project")
+        } finally {
+            setSaving(false)
+        }
+    }
+
+    const handleEditProject = (project: Project) => {
+        setIsEditing(project.id)
+        setProjectForm({
+            title: project.title,
+            title_th: project.title_th || "",
+            description: project.description,
+            description_th: project.description_th || "",
+            imageUrl: project.imageUrl,
+            tags: project.tags,
+            link: project.link || ""
+        })
+        // Scroll to form
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+
+    const handleDeleteProject = async (id: string) => {
+        if (!confirm("Are you sure you want to delete this project?")) return
+        setSaving(true)
+        try {
+            const res = await fetch(`/api/projects?id=${id}`, { method: "DELETE" })
+            if (res.ok) {
+                setMessage("Project deleted!")
+                fetchProjects()
+                setTimeout(() => setMessage(""), 3000)
+            } else {
+                setMessage("Failed to delete project")
+            }
+        } catch (error) {
+            setMessage("Error deleting project")
+        } finally {
+            setSaving(false)
+        }
+    }
 
 
     const handleSaveConfig = async (key: string) => {
