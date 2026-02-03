@@ -29,12 +29,14 @@ model SiteConfig {
 }
 
 model Project {
-  id          String   @id @default(cuid())
-  title       String
-  description String
-  imageUrl    String
-  tags        String   // Comma separated values
-  link        String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(cuid())
+  title         String
+  title_th      String?  // Thai title
+  description   String
+  description_th String? // Thai description
+  imageUrl      String
+  tags          String   // Comma separated values
+  link          String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }

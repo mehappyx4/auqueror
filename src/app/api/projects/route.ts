@@ -25,12 +25,14 @@ export async function POST(request: Request) {
 
     try {
         const body = await request.json();
-        const { title, description, imageUrl, tags, link } = body;
+        const { title, title_th, description, description_th, imageUrl, tags, link } = body;
 
         const project = await prisma.project.create({
             data: {
                 title,
+                title_th,
                 description,
+                description_th,
                 imageUrl,
                 tags,
                 link,
@@ -75,7 +77,7 @@ export async function PUT(request: Request) {
 
     try {
         const body = await request.json();
-        const { id, title, description, imageUrl, tags, link } = body;
+        const { id, title, title_th, description, description_th, imageUrl, tags, link } = body;
 
         if (!id) {
             return NextResponse.json({ error: "ID required" }, { status: 400 });
@@ -85,7 +87,9 @@ export async function PUT(request: Request) {
             where: { id },
             data: {
                 title,
+                title_th,
                 description,
+                description_th,
                 imageUrl,
                 tags,
                 link,

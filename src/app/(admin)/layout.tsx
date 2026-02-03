@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import { useLanguage } from "@/components/LanguageProvider";
 
 export default function AdminLayout({
     children,
@@ -11,10 +12,11 @@ export default function AdminLayout({
 }>) {
     const pathname = usePathname();
     const { data: session } = useSession();
+    const { language, setLanguage, t } = useLanguage();
 
     const navItems = [
-        { name: "Dashboard", href: "/admin", icon: "📊" },
-        { name: "Back to Site", href: "/", icon: "🏠" },
+        { name: t("Dashboard", "แผงควบคุม"), href: "/admin", icon: "📊" },
+        { name: t("Back to Site", "กลับสู่เว็บไซต์"), href: "/", icon: "🏠" },
     ];
 
     return (
@@ -33,8 +35,8 @@ export default function AdminLayout({
                             key={item.href}
                             href={item.href}
                             className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${pathname === item.href
-                                    ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400"
-                                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-900"
+                                ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400"
+                                : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-900"
                                 }`}
                         >
                             <span className="text-lg">{item.icon}</span>
@@ -44,6 +46,33 @@ export default function AdminLayout({
                 </nav>
 
                 <div className="p-4 border-t border-gray-200 dark:border-zinc-800">
+                    {/* Language Switcher */}
+                    <div className="mb-6 px-2">
+                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 block px-2">
+                            {t("Select Language", "เลือกภาษา")}
+                        </label>
+                        <div className="grid grid-cols-2 gap-2">
+                            <button
+                                onClick={() => setLanguage("en")}
+                                className={`flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-bold transition-all ${language === "en"
+                                    ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
+                                    : "bg-gray-100 dark:bg-zinc-900 text-gray-500 hover:text-gray-900 dark:hover:text-white"
+                                    }`}
+                            >
+                                🇺🇸 EN
+                            </button>
+                            <button
+                                onClick={() => setLanguage("th")}
+                                className={`flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-bold transition-all ${language === "th"
+                                    ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
+                                    : "bg-gray-100 dark:bg-zinc-900 text-gray-500 hover:text-gray-900 dark:hover:text-white"
+                                    }`}
+                            >
+                                🇹🇭 TH
+                            </button>
+                        </div>
+                    </div>
+
                     <div className="mb-4 px-4">
                         <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
                             {session?.user?.name || "Admin"}
@@ -57,7 +86,7 @@ export default function AdminLayout({
                         className="w-full flex items-center gap-3 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                     >
                         <span className="text-lg">🚪</span>
-                        Sign Out
+                        {t("Sign Out", "ออกจากระบบ")}
                     </button>
                 </div>
             </aside>

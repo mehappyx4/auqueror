@@ -69,3 +69,4 @@ export const authOptions: NextAuthOptions = {
     // Prevent crash if NEXTAUTH_SECRET is not set in Vercel
     secret: process.env.NEXTAUTH_SECRET || "temporary_fallback_secret_to_prevent_500_error",
     debug: true, // Enable debug to see errors in Vercel logs
+}

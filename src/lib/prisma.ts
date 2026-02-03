@@ -5,8 +5,12 @@ const globalForPrisma = global as unknown as { prisma: PrismaClient }
 let prisma: PrismaClient
 
 try {
-    const hasDB = process.env.POSTGRES_PRISMA_URL
-    if (!hasDB) throw new Error("No POSTGRES_PRISMA_URL found")
+    // Be flexible with Vercel's naming conventions
+    const dbUrl = process.env.POSTGRES_PRISMA_URL ||
+        process.env.DATABASE_URL ||
+        Object.keys(process.env).find(key => key.includes('POSTGRES_PRISMA_URL') || key.includes('POSTGRES_URL'));
+
+    if (!dbUrl) throw new Error("No Database URL found in environment variables");
 
     prisma = globalForPrisma.prisma || new PrismaClient()
 } catch (e) {

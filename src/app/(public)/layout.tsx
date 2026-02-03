@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import { prisma } from "@/lib/prisma";
-
+import { StarField } from "@/components/StarField";
+import FooterContent from "@/components/FooterContent";
 
 export const dynamic = "force-dynamic"
 
@@ -9,7 +10,7 @@ export default async function PublicLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    // Fetch footer content with fallback
+    // Fetch configs with fallback
     let configMap: Record<string, string> = {};
     try {
         const configs = await prisma.siteConfig.findMany();
@@ -22,19 +23,13 @@ export default async function PublicLayout({
     }
 
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen relative">
+            <StarField />
             <Navbar />
-            <main className="flex-grow">
+            <main className="flex-grow z-10">
                 {children}
             </main>
-            <footer className="py-8 text-center text-sm text-slate-500 dark:text-slate-600 border-t border-slate-100 dark:border-slate-900 bg-white dark:bg-slate-950">
-                {configMap.footer_text || "© 2026 Personal Website Template. Built with Next.js & Tailwind."}
-                <div className="mt-2 text-xs">
-                    <a href="/auth/admin-login" className="text-slate-300 dark:text-slate-800 hover:text-slate-500 dark:hover:text-slate-500 transition-colors">
-                        Admin Access
-                    </a>
-                </div>
-            </footer>
+            <FooterContent configMap={configMap} />
         </div>
     );
 }

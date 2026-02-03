@@ -4,41 +4,43 @@ import Link from "next/link"
 import { useSession, signOut } from "next-auth/react"
 import { useState } from "react"
 import { usePathname } from "next/navigation"
+import { useLanguage } from "./LanguageProvider"
 
 export default function Navbar() {
     const { data: session } = useSession()
     const [isOpen, setIsOpen] = useState(false)
     const pathname = usePathname()
+    const { language, setLanguage, t } = useLanguage()
 
     const navLinks = [
-        { name: "Home", href: "/" },
-        { name: "About", href: "/about" },
-        { name: "Portfolio", href: "/portfolio" },
-        { name: "Contact", href: "/contact" },
+        { name: t("Home", "หน้าแรก"), href: "/" },
+        { name: t("About", "เกี่ยวกับ"), href: "/about" },
+        { name: t("Portfolio", "ผลงาน"), href: "/portfolio" },
+        { name: t("Contact", "ติดต่อ"), href: "/contact" },
     ]
 
     const isActive = (path: string) => pathname === path
 
     return (
-        <nav className="bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 sticky top-0 z-50">
+        <nav className="glass-card border-b border-white/5 sticky top-0 z-50 backdrop-blur-xl bg-black/20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between h-16">
+                <div className="flex justify-between h-20 items-center">
                     <div className="flex">
-                        <Link href="/" className="flex-shrink-0 flex items-center">
-                            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
-                                MyWeb
+                        <Link href="/" className="flex-shrink-0 flex items-center group">
+                            <span className="text-2xl font-black bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent group-hover:drop-shadow-[0_0_10px_rgba(139,92,246,0.5)] transition-all">
+                                DARK STAR
                             </span>
                         </Link>
                     </div>
 
-                    <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+                    <div className="hidden md:flex sm:items-center space-x-4">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive(link.href)
-                                        ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20"
-                                        : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800"
+                                className={`px-4 py-2 rounded-xl text-sm font-bold uppercase tracking-widest transition-all ${isActive(link.href)
+                                    ? "text-white bg-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)] border border-white/10"
+                                    : "text-slate-400 hover:text-white hover:bg-white/5"
                                     }`}
                             >
                                 {link.name}
@@ -48,45 +50,73 @@ export default function Navbar() {
                         {session?.user.role === 'ADMIN' && (
                             <Link
                                 href="/admin"
-                                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive("/admin")
-                                        ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20"
-                                        : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800"
+                                className={`px-4 py-2 rounded-xl text-sm font-bold uppercase tracking-widest transition-all ${isActive("/admin")
+                                    ? "text-white bg-white/10 border border-white/10"
+                                    : "text-slate-400 hover:text-white hover:bg-white/5"
                                     }`}
                             >
-                                Admin
+                                {t("Admin", "แอดมิน")}
                             </Link>
                         )}
 
-                        {session ? (
-                            <div className="flex items-center space-x-4 pl-4 border-l border-gray-200 dark:border-gray-700">
-                                <span className="text-sm text-gray-500 hidden lg:block">{session.user.name || session.user.email}</span>
-                                <button
-                                    onClick={() => signOut()}
-                                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                                >
-                                    Logout
-                                </button>
-                            </div>
-                        ) : (
-                            <div className="flex items-center space-x-2 pl-4 border-l border-gray-200 dark:border-gray-700">
-                                <Link href="/auth/login" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
-                                    Login
-                                </Link>
-                                <Link href="/auth/register" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
-                                    Register
-                                </Link>
-                            </div>
-                        )}
+                        {/* Language Toggle */}
+                        <div className="flex items-center bg-white/5 rounded-full p-1 border border-white/10 ml-4 backdrop-blur-md">
+                            <button
+                                onClick={() => setLanguage("en")}
+                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black transition-all ${language === "en" ? "bg-white text-black shadow-lg shadow-white/20" : "text-slate-500 hover:text-white"}`}
+                            >
+                                🇺🇸 EN
+                            </button>
+                            <button
+                                onClick={() => setLanguage("th")}
+                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black transition-all ${language === "th" ? "bg-white text-black shadow-lg shadow-white/20" : "text-slate-500 hover:text-white"}`}
+                            >
+                                🇹🇭 TH
+                            </button>
+                        </div>
+
+                        <div className="flex items-center space-x-4 pl-6 border-l border-white/10">
+                            {session ? (
+                                <>
+                                    <span className="text-xs font-bold text-slate-500 hidden lg:block uppercase tracking-tighter">
+                                        {session.user.name || session.user.email}
+                                    </span>
+                                    <button
+                                        onClick={() => signOut()}
+                                        className="btn-secondary px-4 py-2 rounded-xl text-xs font-bold uppercase transition-all"
+                                    >
+                                        {t("Exit", "ออก")}
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <Link href="/auth/login" className="text-slate-400 hover:text-white text-xs font-bold uppercase tracking-widest transition-all">
+                                        {t("Login", "เข้าสู่ระบบ")}
+                                    </Link>
+                                    <Link href="/auth/register" className="btn-primary px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest shadow-lg">
+                                        {t("Join", "เข้าร่วม")}
+                                    </Link>
+                                </>
+                            )}
+                        </div>
                     </div>
 
                     {/* Mobile menu button */}
-                    <div className="flex items-center sm:hidden">
+                    <div className="flex items-center md:hidden gap-4">
+                        {/* Mobile Language Toggle */}
+                        <div className="flex items-center bg-white/5 rounded-full p-1 border border-white/10">
+                            <button
+                                onClick={() => setLanguage(language === "en" ? "th" : "en")}
+                                className="px-3 py-1 text-[10px] font-black text-white"
+                            >
+                                {language.toUpperCase()}
+                            </button>
+                        </div>
                         <button
                             onClick={() => setIsOpen(!isOpen)}
-                            className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+                            className="inline-flex items-center justify-center p-2 rounded-xl text-white bg-white/5 border border-white/10 focus:outline-none"
                         >
                             <span className="sr-only">Open main menu</span>
-                            {/* Icon */}
                             <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
                             </svg>
@@ -97,15 +127,15 @@ export default function Navbar() {
 
             {/* Mobile Menu */}
             {isOpen && (
-                <div className="sm:hidden bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
-                    <div className="pt-2 pb-3 space-y-1">
+                <div className="md:hidden glass-card border-b border-white/5 backdrop-blur-3xl bg-black/80">
+                    <div className="pt-4 pb-6 px-4 space-y-2">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(link.href)
-                                        ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20"
-                                        : "text-gray-700 dark:text-gray-300 hover:text-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
+                                className={`block px-4 py-3 rounded-xl text-base font-bold uppercase tracking-widest transition-all ${isActive(link.href)
+                                    ? "text-white bg-white/10 border border-white/10"
+                                    : "text-slate-400 hover:text-white hover:bg-white/5"
                                     }`}
                                 onClick={() => setIsOpen(false)}
                             >
@@ -116,39 +146,39 @@ export default function Navbar() {
                         {session?.user.role === 'ADMIN' && (
                             <Link
                                 href="/admin"
-                                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 hover:bg-gray-50"
+                                className="block px-4 py-3 rounded-xl text-base font-bold uppercase tracking-widest text-slate-400 hover:text-white hover:bg-white/5"
                                 onClick={() => setIsOpen(false)}
                             >
-                                Admin
+                                {t("Admin HUB", "แอดมินฮับ")}
                             </Link>
                         )}
                         {session ? (
-                            <div className="pt-4 pb-2 border-t border-gray-200 dark:border-gray-800">
-                                <div className="px-3 mb-2">
-                                    <span className="text-sm text-gray-500">{session.user.name || session.user.email}</span>
+                            <div className="pt-4 mt-4 border-t border-white/10">
+                                <div className="px-4 mb-4">
+                                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{session.user.name || session.user.email}</span>
                                 </div>
                                 <button
                                     onClick={() => signOut()}
-                                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:text-red-900 hover:bg-red-50"
+                                    className="block w-full text-center px-4 py-3 rounded-xl text-base font-bold uppercase bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20"
                                 >
-                                    Logout
+                                    {t("Log out", "ออกจากระบบ")}
                                 </button>
                             </div>
                         ) : (
-                            <div className="pt-4 pb-2 border-t border-gray-200 dark:border-gray-800 flex gap-2 px-3">
+                            <div className="pt-4 mt-4 border-t border-white/10 flex gap-4 px-2">
                                 <Link
                                     href="/auth/login"
-                                    className="flex-1 text-center block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 hover:bg-gray-50 border border-gray-200 dark:border-gray-700"
+                                    className="flex-1 text-center py-3 rounded-xl font-bold uppercase text-slate-400 border border-white/10"
                                     onClick={() => setIsOpen(false)}
                                 >
-                                    Login
+                                    {t("Login", "เข้าสู่ระบบ")}
                                 </Link>
                                 <Link
                                     href="/auth/register"
-                                    className="flex-1 text-center block px-3 py-2 rounded-md text-base font-medium bg-blue-600 text-white hover:bg-blue-700"
+                                    className="flex-1 text-center py-3 rounded-xl font-bold uppercase btn-primary"
                                     onClick={() => setIsOpen(false)}
                                 >
-                                    Register
+                                    {t("Join", "เข้าร่วง")}
                                 </Link>
                             </div>
                         )}
@@ -158,3 +188,4 @@ export default function Navbar() {
         </nav>
     )
 }
+
